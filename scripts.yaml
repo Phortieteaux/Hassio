@@ -1,0 +1,142 @@
+garage_open:
+  alias: Garage Door - Open
+  sequence:
+  - data:
+      entity_id: cover.garage_door
+    service: cover.open_cover
+garage_close:
+  alias: Garage Door - Close
+  sequence:
+  - data:
+      entity_id: cover.garage_door
+    service: cover.close_cover
+google_good_night:
+  alias: Google Good Night
+  sequence:
+  - data:
+      entity_id: light.left_living_room_light
+    service: light.turn_off
+  - delay: 00:00:05
+  - data:
+      entity_id: light.right_living_room_light
+    service: light.turn_off
+  - delay: 00:00:05
+  - data:
+      brightness: '75'
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - data:
+      device: 44538145
+      command: PowerOff
+      entity_id: remote.livingroom
+    service: remote.send_command
+  - data:
+      device: 44538143
+      command: PowerOff
+      entity_id: remote.livingroom
+    service: remote.send_command
+  - data:
+      device: 44538141
+      command: PowerOff
+      entity_id: remote.livingroom
+    service: remote.send_command
+  - data:
+      device: 44538142
+      command: PowerOff
+      entity_id: remote.livingroom
+    service: remote.send_command
+  - delay: 00:00:05
+  - data:
+      entity_id: light.piano_light
+    service: light.turn_off
+  - delay: 00:00:05
+  - data:
+      entity_id: light.hallway_floor_lamp
+    service: light.turn_off
+tv_onoff:
+  alias: tv_onoff
+  sequence:
+  - data:
+      command: PowerToggle
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+tv_mute:
+  alias: tv_mute
+  sequence:
+  - data:
+      command: Mute
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+tv_hdmi1:
+  alias: tv_hdmi1
+  sequence:
+  - data:
+      command: InputHdmi1
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+tv_hdmi2:
+  alias: tv_hdmi2
+  sequence:
+  - data:
+      command: InputHdmi2
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+tv_hdmi3:
+  alias: tv_hdmi3
+  sequence:
+  - data:
+      command: InputHdmi3
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+tv_hdmi4:
+  alias: tv_hdmi4
+  sequence:
+  - data:
+      command: InputHdmi4
+      device: 44538143
+      entity_id: remote.livingroom
+    service: remote.send_command
+stereo_onoff:
+  alias: stereo_onoff
+  sequence:
+  - data:
+      command: PowerToggle
+      device: 44538141
+      entity_id: remote.livingroom
+    service: remote.send_command
+stereo_mute:
+  alias: stereo_mute
+  sequence:
+  - data:
+      command: Mute
+      device: 44538141
+      entity_id: remote.livingroom
+    service: remote.send_command
+toothbrush_reminder:
+  alias: Reminder - Toothbrush and Get Dressed
+  sequence:
+  - data:
+      entity_id: media_player.living_room_home
+      volume_level: '.6'
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.living_room_home
+      media_content_id: https://coffeefueled.duckdns.org/local/audio/computer_magic.mp3
+      media_content_type: music
+    service: media_player.play_media
+  - delay: 00:00:05
+  - data:
+      entity_id: media_player.living_room_home
+      message: Time to get dressed and brush your teeth Mr. Drury.  Scooby dooby doo.  Go
+        man, go go go go go go go go go go!
+    service: tts.google_say
+  - data:
+      command: Pause
+      device: 44538145
+      entity_id: remote.livingroom
+    service: remote.send_command

@@ -1,0 +1,167 @@
+# groups
+group.default_view:
+  homebridge_visible: false
+group.all_automations:
+  hidden: false
+group.all_scripts:
+  hidden: false
+group.garage:
+  homebridge_visible: false
+
+# devices
+climate.rcht8610wf2006:
+  friendly_name: Thermostat
+
+# cover
+cover.garage_door:
+  friendly_name: Garage Door
+  homebridge_cover_type: garage_door
+  homebridge_visible: true
+  icon: mdi:garage
+
+# Weather
+weather.dark_sky: 
+  friendly_name: 'Current Conditions'
+sensor.dark_sky_pressure:
+  icon: mdi:arrow-collapse-vertical
+sensor.dark_sky_daily:
+  icon: mdi:calendar-multiple
+sensor.dark_sky_hourly:
+  icon: mdi:calendar
+
+# lights 
+light.hallway_floor_lamp:
+  homebridge_visible: true
+light.left_living_room_light:
+  homebridge_visible: true
+light.living_room_floor_lamp:
+  homebridge_visible: true
+light.piano_light:
+  homebridge_visible: true
+light.right_living_room_light:
+  homebridge_visible: true
+light.amys_light:
+  homebridge_visible: true
+  friendly_name: "Amy's Light"
+light.hue_white_light_1_2:
+  homebridge_visible: true
+  friendly_name: "Jason's Light"
+
+# switches
+switch.coffee_maker:
+  homebridge_visible: true
+  icon: mdi:coffee
+switch.fish_tank:
+  friendly_name: Fish Tank
+  homebridge_visible: true
+  icon: mdi:fish
+switch.aarons_night_light:
+  homebridge_visible: true
+  icon: mdi:lightbulb
+  friendly_name: "Aaron's Night Light"
+switch.isp6x:
+  friendly_name: "Aaron's Light"
+  icon: mdi:lightbulb
+switch.isp6x_2:
+  friendly_name: "Office Light"
+  icon: mdi:lightbulb
+switch.dining_room_light:
+  homebridge_visible: true
+  icon: mdi:lightbulb
+switch.garage_cam:
+  assumed_state: false
+  icon: mdi:cat
+switch.guest_room_light:
+  homebridge_visible: true
+  icon: mdi:lightbulb
+switch.driveway_lights_switch:
+  friendly_name: Driveway Lights
+  homebridge_visible: true
+  icon: mdi:lightbulb
+
+# device_trackers
+device_tracker.jake:
+  icon: mdi:account
+device_tracker.amy:
+  icon: mdi:account
+
+# sensors
+sensor.osmo_status:
+  icon: mdi:roomba
+sensor.osmo_battery:
+  icon: mdi:battery
+#sensor.dark_sky_temperature:
+#  homebridge_visible: true
+sensor.aarons_room_smoke_detector_battery:
+  icon: mdi:alarm-bell 
+sensor.guest_room_smoke_detector_battery:
+  icon: mdi:alarm-bell 
+sensor.hallway_smoke_detector_battery:
+  icon: mdi:alarm-bell 
+sensor.master_bedroom_smoke_detector_battery:
+  icon: mdi:alarm-bell 
+sensor.cpu_temperature:
+  friendly_name: CPU Temperature
+sensor.gpu_temperature:
+  friendly_name: GPU Temperature
+
+# tiles
+input_text.living_room_tiles:
+  custom_ui_state_card: state-card-tiles
+  config:
+    columns: 4
+    rows: 4
+    column_width: 75px
+    row_height: 40px
+    color: grey
+    color_on: grey
+    color_off: grey
+    entities:
+      - entity: script.tv_onoff
+        icon: mdi:television-classic
+        column: 1
+        row: 1
+      - entity: switch.tv_volup
+        icon: mdi:volume-plus
+        column: 2
+        row: 1
+      - entity: switch.tv_voldn
+        icon: mdi:volume-minus
+        column: 3
+        row: 1
+      - entity: script.tv_mute
+        icon: mdi:volume-off
+        column: 4
+        row: 1
+      - entity: script.tv_hdmi1
+        icon: mdi:television-box
+        column: 1
+        row: 2
+      - entity: script.tv_hdmi2
+        icon: mdi:filmstrip
+        column: 2
+        row: 2
+      - entity: script.tv_hdmi3
+        icon: mdi:cast-connected
+        column: 3
+        row: 2
+      - entity: script.tv_hdmi4
+        icon: mdi:gamepad-variant
+        column: 4
+        row: 2
+      - entity: script.stereo_onoff
+        icon: mdi:speaker
+        column: 1
+        row: 4
+      - entity: switch.stereo_volup
+        icon: mdi:volume-plus
+        column: 2
+        row: 4
+      - entity: switch.stereo_voldn
+        icon: mdi:volume-minus
+        column: 3
+        row: 4
+      - entity: script.stereo_mute
+        icon: mdi:volume-off
+        column: 4
+        row: 4

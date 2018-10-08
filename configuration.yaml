@@ -1,0 +1,244 @@
+homeassistant:
+  name: Home
+  latitude:    !secret ha_latitude
+  longitude:   !secret ha_longitude
+  elevation:   !secret ha_elevation
+  unit_system: imperial
+  time_zone:   America/Los_Angeles
+  customize:   !include customize.yaml 
+
+frontend:
+  extra_html_url:
+    - /config/custom_ui/state-card-tiles.html
+  extra_html_url_es5:
+    - /config/custom_ui/state-card-tiles.html
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: !secret configurator_url
+  pihole:
+    title: Pi-hole
+    icon: mdi:block-helper
+    url: !secret pihole_url
+
+http:
+  api_password:    !secret http_api_password
+  base_url:        !secret http_base_url
+  ssl_certificate: !secret http_ssl_cert
+  ssl_key:         !secret http_ssl_key
+
+updater:
+  include_used_components: true
+
+discovery:
+  ignore:
+    - songpal
+  enable:
+    - homekit
+
+config:
+conversation:
+ios:
+map:
+sun:
+
+mqtt:
+  broker: localhost
+
+zone:
+  - name: Home
+    latitude: !secret ha_latitude 
+    longitude: !secret ha_longitude 
+    radius: 2000
+    icon: mdi:account-multiple
+
+history:
+  use_include_order: true
+  include:
+    entities:
+      - sun.sun
+      - light.amys_light
+      - light.jasons_light
+      - light.left_living_room_light
+      - light.right_living_room_light
+      - light.living_room_floor_lamp
+      - light.hallway_floor_lamp
+      - light.piano_light
+      - switch.aarons_light
+      - switch.dining_room_light
+      - switch.driveway_lights_switch
+      - switch.guest_room_light
+      - switch.coffee_maker
+      - switch.fish_tank
+      - sensor.dark_sky_temperature
+      - climate.rcht8610wf2006
+      - sensor.amy_is_home
+      - sensor.jason_is_home
+      - binary_sensor.driveway_camera_motion_detected
+      - binary_sensor.driveway_camera_person_detected
+      - sensor.cpu_temperature
+      - sensor.processor_use
+      - sensor.disk_use_percent_
+      - sensor.memory_use_percent
+      - sensor.swap_use_percent
+
+logbook:
+  include:
+    domains:
+      - automation
+    entities:
+      - sun.sun
+      - light.amys_light
+      - light.jasons_light
+      - light.left_living_room_light
+      - light.right_living_room_light
+      - light.living_room_floor_lamp
+      - light.hallway_floor_lamp
+      - light.piano_light
+      - switch.aarons_light
+      - switch.dining_room_light
+      - switch.driveway_lights_switch
+      - switch.guest_room_light
+      - switch.coffee_maker
+      - switch.fish_tank
+      - sensor.dark_sky_temperature
+      - sensor.amy_is_home
+      - sensor.jason_is_home
+      - binary_sensor.driveway_camera_motion_detected
+      - binary_sensor.driveway_camera_person_detected
+
+tts:
+  - platform: google
+
+homekit:
+  auto_start: false
+  filter:
+    exclude_domains:
+      - script
+      - automation
+
+input_select:
+  vacation_mode:
+    name: Vacation Mode
+    options:
+      - "Off"
+      - "On"
+    icon: mdi:airplane-takeoff
+  guest_mode:
+    name: Guest Mode
+    options:
+      - "Off"
+      - "On"
+    icon: mdi:wallet-travel 
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_key
+
+nest:
+  client_id:     !secret nest_id
+  client_secret: !secret nest_secret 
+
+#media_player:
+#  - platform: samsungtv
+#    host: 192.168.26.232
+#    port: 8001
+    
+geo_location:
+  - platform: geo_json_events
+    url: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson   
+
+zwave:
+  usb_path: /dev/ttyACM0
+
+google_assistant:
+  project_id:    !secret google_project_id
+  client_id:     !secret google_client_id 
+  access_token:  !secret google_access_token
+  agent_user_id: !secret google_agent_user_id
+  api_key:       !secret google_api_key 
+  expose_by_default: false
+  entity_config:
+    cover.garage_door:
+      name: Garage Door
+      expose: true
+    switch.ge_12727_inwall_smart_switch_toggle_switch:
+      name: Driveway Lights
+      expose: true
+    script.google_good_night:
+      name: Script Good Night
+      expose: true
+
+remote:
+  - platform: harmony
+    name: LivingRoom
+    host: 192.168.26.208
+
+wemo:
+  static:
+    - 192.168.26.223
+    - 192.168.26.224
+    - 192.168.26.225
+    - 192.168.26.226
+    - 192.168.26.227
+
+hue:
+  bridges:
+  - host: 192.168.26.201
+    allow_hue_groups: false
+    allow_unreachable: true
+
+cover:
+  platform: opengarage
+  covers:
+    garage:
+      host: 192.168.26.235
+      device_key: !secret opengarage_device_key
+      name: garage_door 
+
+device_tracker:
+  - platform: bluetooth_tracker
+    request_rssi: true
+  - platform: nmap_tracker
+    hosts:
+      - 192.168.26.51
+      - 192.168.26.211
+  - platform: owntracks
+    max_gps_accuracy: 200
+    waypoints: True
+    waypoint_whitelist:
+      - jasonsiphoneot
+
+camera:
+#  - platform: foscam
+#    ip: 192.168.26.112
+#    username: !secret foscam_camera_user
+#    password: !secret foscam_camera_pass
+
+alert:
+  garage_door:
+    name: Garage is open
+    entity_id: sensor.garage_status
+    state: 'Open'
+    repeat: 15
+    can_acknowledge: False
+    skip_first: True
+    notifiers:
+      - ios_jasonsiphoneha
+
+input_text:
+  command:
+    name: Button
+  living_room_tiles:
+    name: Living Room Tiles
+
+neato:
+  username: !secret neato_username
+  password: !secret neato_password
+
+sensor:     !include sensors.yaml
+group:      !include groups.yaml
+automation: !include automations.yaml
+script:     !include scripts.yaml

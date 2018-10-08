@@ -1,0 +1,520 @@
+- id: '1517259363069'
+  alias: Light - Aaron's Room - OnOff - 6:45p to 7:00a
+  trigger:
+  - at: '18:45'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: switch.aarons_light
+    state: 'off'
+  action:
+  - data:
+      entity_id: switch.aarons_light
+    service: switch.turn_on
+  - delay: '12:15'
+  - data:
+      entity_id: switch.aarons_light
+    service: switch.turn_off
+- id: '1517260223550'
+  alias: Presence - Light Path for 15m when coming home after 10:45p
+  trigger:
+  - entity_id: device_tracker.jasons_iphone
+    from: not_home
+    platform: state
+    to: home
+  - entity_id: device_tracker.amysiphone
+    from: not_home
+    platform: state
+    to: home
+  - entity_id: device_tracker.amy
+    event: enter
+    platform: zone
+    zone: zone.home
+  condition:
+  - after: '22:45'
+    before: '5:00'
+    condition: time
+  action:
+  - data:
+      brightness: 200
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - data:
+      brightness: 200
+      entity_id: light.piano_light
+    service: light.turn_on
+  - data:
+      entity_id: switch.dining_room_light
+    service: switch.turn_on
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_on
+  - delay: 00:15
+  - data:
+      brightness: 75
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - data:
+      entity_id: light.piano_light
+    service: light.turn_off
+  - data:
+      entity_id: switch.dining_room_light
+    service: switch.turn_off
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_off
+- id: '1517260714478'
+  alias: Presence - Switch on Driveway Lights for 15m when Coming Home at Night
+  trigger:
+  - entity_id: sensor.jason_is_home
+    from: Away
+    platform: state
+    to: Home
+  - entity_id: sensor.amy_is_home
+    from: Away
+    platform: state
+    to: Home
+  condition: []
+  action:
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_on
+  - delay: 00:15
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_off
+- id: '1517260840499'
+  alias: Device - Fish Tank - OnOff - 8a to 6p
+  trigger:
+  - at: '8:00:00'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: switch.fish_tank
+    service: switch.turn_on
+  - delay: '8:00'
+  - data:
+      entity_id: switch.fish_tank
+    service: switch.turn_off
+- id: '1517261130705'
+  alias: '5 - Mode: Good night - All lights except one off at 10:45p'
+  trigger:
+  - at: '22:45'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: light.piano_light
+    service: light.turn_off
+  - delay: 00:00:02
+  - data:
+      entity_id: light.hallway_floor_lamp
+    service: light.turn_off
+  - delay: 00:00:02
+  - data:
+      brightness: 75
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      entity_id: light.right_living_room_light
+    service: light.turn_off
+  - delay: 00:00:02
+  - data:
+      entity_id: light.left_living_room_light
+    service: light.turn_off
+  - data:
+      entity_id: climate.rcht8610wf2006
+      temperature: 64
+    service: climate.set_temperature
+- id: '1517261476845'
+  alias: '4 - Mode: Nighttime - Shut down Dining Room light at 9:00p, Dim Music Room'
+  trigger:
+  - at: '21:00'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: switch.dining_room_light
+    service: switch.turn_off
+  - delay: 00:00:02
+  - data:
+      brightness: 75
+      entity_id: light.piano_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 75
+      entity_id: light.hallway_floor_lamp
+    service: light.turn_on
+  - data:
+      entity_id: climate.rcht8610wf2006
+      temperature: 64
+    service: climate.set_temperature
+- id: '1517261554798'
+  alias: Light - Dining Room - On at sunset
+  trigger:
+  - event: sunset
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: switch.dining_room_light
+    service: switch.turn_on
+- id: '1517261710577'
+  alias: '3 - Mode: Evening - All lights on 90m before sunset'
+  trigger:
+  - event: sunset
+    offset: -01:30
+    platform: sun
+  condition: []
+  action:
+  - data:
+      brightness: 200
+      entity_id: light.piano_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 200
+      entity_id: light.hallway_floor_lamp
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.right_living_room_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.left_living_room_light
+    service: light.turn_on
+- id: '1517261991569'
+  alias: '2 - Mode: Daytime - All lights and switches off 150m after sunrise'
+  trigger:
+  - event: sunrise
+    offset: '+2:30'
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_off
+  - data:
+      entity_id: group.all_lights
+    service: light.turn_off
+- id: '1517262267579'
+  alias: '1 - Mode: Morning - 5:15a'
+  trigger:
+  - at: '5:15'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_on
+  - delay: 00:30
+  - data:
+      brightness: 200
+      entity_id: light.piano_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.right_living_room_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.left_living_room_light
+    service: light.turn_on
+- id: '1517262421117'
+  alias: Device - Coffee Machine - Switch off after 8m and notify
+  trigger:
+  - entity_id: switch.coffee_maker
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - delay: 00:08
+  - data:
+      entity_id: switch.coffee_maker
+    service: switch.turn_off
+  - data:
+      message: Coffee is ready!!  Yay!!
+    service: notify.jasons_iphone
+  - data:
+      message: Coffee is ready!!  Yay!!
+    service: notify.ios_amy
+- id: '1518716206308'
+  alias: 'Guest - 1 - Mode: Morning - 5:45a'
+  initial_state: 'off'
+  trigger:
+  - at: '5:45'
+    platform: time
+  condition: []
+  action:
+  - data:
+      brightness: 200
+      entity_id: light.piano_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.living_room_floor_lamp
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.right_living_room_light
+    service: light.turn_on
+  - delay: 00:00:02
+  - data:
+      brightness: 225
+      entity_id: light.left_living_room_light
+    service: light.turn_on
+- id: '1518716296364'
+  alias: 'Guest - 2 - Mode: Daytime - All lights and switches off 150m after sunrise'
+  initial_state: 'off'
+  trigger:
+  - event: sunrise
+    offset: '+2:30'
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: group.all_lights
+    service: light.turn_off
+- id: '1518716923799'
+  alias: Mode - Guest Mode - On
+  initial_state: 'off'
+  trigger:
+  - entity_id: input_select.guest_mode
+    from: 'Off'
+    platform: state
+    to: 'On'
+  condition: []
+  action:
+  - data:
+      entity_id: automation.1__mode_morning__515a
+    service: automation.turn_off
+  - data:
+      entity_id: automation.2__mode_daytime__all_lights_and_switches_off_150m_after_sunrise
+    service: automation.turn_off
+  - data:
+      entity_id: automation.guest__1__mode_morning__545a
+    service: automation.turn_on
+  - data:
+      entity_id: automation.guest__2__mode_daytime__all_lights_and_switches_off_150m_after_sunrise
+    service: automation.turn_on
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_on
+- id: '1518717118593'
+  alias: Mode - Guest Mode - Off
+  initial_state: 'on'
+  trigger:
+  - entity_id: input_select.guest_mode
+    from: 'On'
+    platform: state
+    to: 'Off'
+  condition: []
+  action:
+  - data:
+      entity_id: automation.1__mode_morning__515a
+    service: automation.turn_on
+  - data:
+      entity_id: automation.2__mode_daytime__all_lights_and_switches_off_150m_after_sunrise
+    service: automation.turn_on
+  - data:
+      entity_id: automation.guest__1__mode_morning__545a
+    service: automation.turn_off
+  - data:
+      entity_id: automation.guest__2__mode_daytime__all_lights_and_switches_off_150m_after_sunrise
+    service: automation.turn_off
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_off
+- id: '1520267554013'
+  alias: 'Reminder: Brush Teeth and Get Dressed'
+  trigger:
+  - at: 08:15
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    service: script.toothbrush_reminder
+- id: '1522267161603'
+  alias: Test - Light Sensor
+  trigger:
+  - below: '800'
+    entity_id: sensor.living_room_light_level
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.toggle
+- id: '1528465734589'
+  alias: Vacation 1 - Master Bedroom Lights
+  initial_state: 'off'
+  trigger:
+  - at: '20:30'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: light.amys_light
+    service: light.turn_on
+  - delay: 00:30
+  - data:
+      entity_id: light.hue_white_light_1_2
+    service: light.turn_on
+  - delay: '1:00'
+  - data:
+      entity_id: light.amys_light
+    service: light.turn_off
+  - delay: 00:30
+  - data:
+      entity_id: light.hue_white_light_1_2
+    service: light.turn_off
+- id: '1528465942139'
+  alias: Mode - Vacation Mode - Off
+  initial_state: 'on'
+  trigger:
+  - entity_id: input_select.vacation_mode
+    from: 'On'
+    platform: state
+    to: 'Off'
+  condition: []
+  action:
+  - data:
+      entity_id: automation.vacation_1__master_bedroom_lights
+    service: automation.turn_off
+  - data:
+      entity_id: automation.vacation_2__driveway_lights
+    service: automation.turn_off
+  - data:
+      entity_id: automation.vacation_3__guest_room_light
+    service: automation.turn_off
+- id: '1528466140178'
+  alias: Mode - Vacation Mode - On
+  initial_state: 'off'
+  trigger:
+  - entity_id: input_select.vacation_mode
+    from: 'Off'
+    platform: state
+    to: 'On'
+  condition: []
+  action:
+  - data:
+      entity_id: automation.vacation_1__master_bedroom_lights
+    service: automation.turn_on
+  - data:
+      entity_id: automation.vacation_2__driveway_lights
+    service: automation.turn_on
+  - data:
+      entity_id: automation.vacation_3__guest_room_light
+    service: automation.turn_on
+- id: '1528476228742'
+  alias: Vacation 2 - Driveway Lights
+  initial_state: 'off'
+  trigger:
+  - event: sunset
+    offset: '+1:00'
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_on
+  - delay: '2:00'
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_off
+- id: '1528477562057'
+  alias: Vacation 3 - Guest Room Light
+  initial_state: 'off'
+  trigger:
+  - at: '19:30'
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_on
+  - delay: '2:15'
+  - data:
+      entity_id: switch.guest_room_light
+    service: switch.turn_off
+- id: '1535490528959'
+  alias: System - Start HomeKit
+  trigger:
+  - event_data: {}
+    event_type: zwave.network_ready
+    platform: event
+  - event_data: {}
+    event_type: zwave.network_complete
+    platform: event
+  condition: []
+  action:
+  - service: homekit.start
+- id: '1538798136683'
+  alias: Security - Driveway lights on for 15m on motion
+  trigger:
+  - entity_id: binary_sensor.driveway_camera_motion_detected
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_on
+  - delay: 00:15:00
+  - data:
+      entity_id: switch.driveway_lights_switch
+    service: switch.turn_off
+- id: '1538879769632'
+  alias: Test - Notify entering home
+  trigger:
+  - entity_id: sensor.jason_is_home
+    from: Away
+    platform: state
+    to: Home
+  condition: []
+  action:
+  - data:
+      message: Entering Home
+    service: notify.ios_jasonsiphoneha
+- id: '1538933208504'
+  alias: Utility - Disable Motion Detection on Driveway Lights
+  trigger:
+  - entity_id: switch.driveway_lights_switch
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: switch.driveway_lights_switch
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: automation.security__driveway_lights_on_for_10m_on_motion
+    service: automation.turn_off
+  - delay: 0:01
+  - data:
+      entity_id: automation.security__driveway_lights_on_for_10m_on_motion
+    service: automation.turn_off

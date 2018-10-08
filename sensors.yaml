@@ -1,0 +1,220 @@
+## Packages
+#- platform: ups
+#  username: !secret ups_user
+#  password: !secret ups_pass
+#  name: UPS
+#- platform: fedex
+#  username: !secret fedex_user
+#  password: !secret fedex_pass
+#  name: FedEx
+
+## Server / OS
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /
+    - type: disk_free
+      arg: /
+    - type: memory_use_percent
+    - type: memory_free
+    - type: swap_use_percent
+    - type: load_5m
+    - type: processor_use
+    - type: since_last_boot
+
+## Dark Sky
+- platform: darksky
+  api_key: !secret darksky_key
+  update_interval: '00:30'
+  monitored_conditions:
+    - pressure
+    - hourly_summary
+    - daily_summary
+    - pressure
+    - uv_index
+
+## Cover
+- platform: template
+  sensors:
+
+    jason_is_home:
+      friendly_name: "Jason’s Geofence"
+      value_template: >-
+        {% if is_state('device_tracker.jason', 'home') %}
+          Home
+        {% elif is_state('device_tracker.jasonsiphoneha', 'home') %}
+          Home
+        {% elif is_state('device_tracker.jasonsiphonenw', 'home') %}
+          Home
+        {% elif is_state('device_tracker.jasonsiphonebt', 'home') %}
+          Home
+        {% else %}
+          Away
+        {% endif %}
+    amy_is_home:
+      friendly_name: "Amy’s Geofence"
+      value_template: >-
+        {% if is_state('device_tracker.amy', 'home') %}
+          Home
+        {% elif is_state('device_tracker.amysiphoneha', 'home') %}
+          Home
+        {% elif is_state('device_tracker.amysiphonenw', 'home') %}
+          Home
+        {% else %}
+          Away
+        {% endif %}
+
+    garage_status:
+      friendly_name: 'Garage Door Status'
+      value_template: '{% if states.cover.garage_door %}
+          {% if states.cover.garage_door.attributes["door_state"] == "open" %}
+            Open
+          {% elif states.cover.garage_door.attributes["door_state"] == "closed" %}
+            Closed
+          {% elif states.cover.garage_door.attributes["door_state"] == "opening" %}
+            Opening
+          {% elif states.cover.garage_door.attributes["door_state"] == "closing" %}
+            Closing
+          {% else %}
+            Unknown
+          {% endif %}
+          {% else %}
+          n/a
+          {% endif %}'
+    osmo_status:
+      friendly_name: Osmo Status
+      value_template: '{{ states.vacuum.osmo.attributes.status }}'
+    osmo_battery:
+      friendly_name: Osmo Battery Level
+      value_template: '{{ states.vacuum.osmo.attributes.battery_level }}'
+      unit_of_measurement: '%'
+    sunset_time:
+      value_template: '{% set timestamp = as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%I:%M") %} {{ timestamp.lstrip("0") }}'
+      friendly_name: "Sunset"
+    sunrise_time:
+      value_template: '{% set timestamp = as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%I:%M") %} {{ timestamp.lstrip("0") }}'
+      friendly_name: "Sunrise"
+    guest_room_smoke_detector_battery:
+      friendly_name: 'Guest Room Smoke Detector Battery'
+      value_template: '{{ states.zwave.guest_room_smoke_detector.attributes.battery_level }}'
+      unit_of_measurement: "%"
+#    guest_room_smoke:
+#      value_template: '{%- if is_state("sensor.guest_room_smoke_detector_alarm_type", "0") %}
+#                        Idle
+#                        {%else%}
+#                          {%- if is_state("sensor.guest_room_smoke_detector_alarm_type", "1") %}
+#                          Fire
+#                         {%- elif is_state("sensor.guest_room_smoke_detector_alarm_type", "2") %}
+#                         C02
+#                         {%- elif is_state("sensor.guest_room_smoke_detector_alarm_type", "12") %}
+#                         Testing
+#                         {%- elif is_state("sensor.guest_room_smoke_detector_alarm_type", "13") %}
+#                         Idle
+#                         {% else %}
+#                         Unknown
+#                         {%- endif %}
+#                       {%endif%}'
+#     friendly_name: 'Guest Room Smoke Detector Status'
+    hallway_smoke_detector_battery:
+      friendly_name: 'Hallway Smoke Detector Battery'
+      value_template: '{{ states.zwave.hallway_smoke_detector.attributes.battery_level }}'
+      unit_of_measurement: "%"
+#   hallway_smoke:
+#     value_template: '{%- if is_state("sensor.hallway_smoke_detector_alarm_type", "0") %}
+#                       Idle
+#                       {%else%}
+#                         {%- if is_state("sensor.hallway_smoke_detector_alarm_type", "1") %}
+#                         Fire
+#                         {%- elif is_state("sensor.hallway_smoke_detector_alarm_type", "2") %}
+#                         C02
+#                         {%- elif is_state("sensor.hallway_smoke_detector_alarm_type", "12") %}
+#                         Testing
+#                         {%- elif is_state("sensor.hallway_smoke_detector_alarm_type", "13") %}
+#                         Idle
+#                         {% else %}
+#                         Unknown
+#                         {%- endif %}
+#                       {%endif%}'
+#     friendly_name: 'Hallway Smoke Detector Status'
+    aarons_room_smoke_detector_battery:
+      friendly_name: "Aaron's Room Smoke Detector Battery"
+      value_template: '{{ states.zwave.aarons_room_smoke_detector.attributes.battery_level }}'
+      unit_of_measurement: "%"
+#   aarons_room_smoke:
+#     value_template: '{%- if is_state("sensor.aarons_room_smoke_detector_alarm_type", "0") %}
+#                       Idle
+#                       {%else%}
+#                         {%- if is_state("sensor.aarons_room_smoke_detector_alarm_type", "1") %}
+#                         Fire
+#                         {%- elif is_state("sensor.aarons_room_smoke_detector_alarm_type", "2") %}
+#                         C02
+#                         {%- elif is_state("sensor.aarons_room_smoke_detector_alarm_type", "12") %}
+#                         Testing
+#                         {%- elif is_state("sensor.aarons_room_smoke_detector_alarm_type", "13") %}
+#                         Idle
+#                         {% else %}
+#                         Unknown
+#                         {%- endif %}
+#                       {%endif%}'
+#     friendly_name: "Aaron's Room Smoke Detector Status"
+    master_bedroom_smoke_detector_battery:
+      friendly_name: 'Master Bedroom Smoke Detector Battery'
+      value_template: '{{ states.zwave.master_bedroom_smoke_detector.attributes.battery_level }}'
+      unit_of_measurement: "%"
+#   master_bedroom_smoke:
+#     value_template: '{%- if is_state("sensor.master_bedroom_smoke_detector_alarm_type", "0") %}
+#                       Idle
+#                       {%else%}
+#                         {%- if is_state("sensor.master_bedroom_smoke_detector_alarm_type", "1") %}
+#                         Fire
+#                         {%- elif is_state("sensor.master_bedroom_smoke_detector_alarm_type", "2") %}
+#                         C02
+#                         {%- elif is_state("sensor.master_bedroom_smoke_detector_alarm_type", "12") %}
+#                         Testing
+#                         {%- elif is_state("sensor.master_bedroom_smoke_detector_alarm_type", "13") %}
+#                         Idle
+#                         {% else %}
+#                         Unknown
+#                         {%- endif %}
+#                       {%endif%}'
+#     friendly_name: 'Master Bedroom Smoke Detector Status'
+    office_smoke_detector_battery:
+      friendly_name: 'Office Smoke Detector Battery'
+      value_template: '{{ states.zwave.office_smoke_detector.attributes.battery_level }}'
+      unit_of_measurement: "%"
+#   office_smoke:
+#     value_template: '{%- if is_state("sensor.office_smoke_detector_alarm_type", "0") %}
+#                       Idle
+#                       {%else%}
+#                         {%- if is_state("sensor.office_smoke_detector_alarm_type", "1") %}
+#                         Fire
+#                         {%- elif is_state("sensor.office_smoke_detector_alarm_type", "2") %}
+#                         C02
+#                         {%- elif is_state("sensor.office_smoke_detector_alarm_type", "12") %}
+#                         Testing
+#                         {%- elif is_state("sensor.office_smoke_detector_alarm_type", "13") %}
+#                         Idle
+#                         {% else %}
+#                         Unknown
+#                         {%- endif %}
+#                       {%endif%}'
+#     friendly_name: 'Office Smoke Detector Status'
+
+- platform: command_line
+  name: cpu_temperature
+  command: "cat /sys/class/thermal/thermal_zone0/temp | awk '{print ((($1*.001) * 9 / 5))+32}'"
+  unit_of_measurement: "F - Pi"
+- platform: command_line
+  name: gpu_temperature
+  command: "/opt/vc/bin/vcgencmd measure_temp | cut -c 6- | head -z --bytes -3 | awk '{print (($1 * 9 / 5))+32}'"
+  unit_of_measurement: "F - Pi"
+
+##MQTT
+#- platform: mqtt
+#  name: "Living Room Light Level"
+#  state_topic: "hass/living_room_light_meter"
+#  unit_of_measurement: "millivolts"
+#  icon: mdi:weather-sunny
+#- platform: mqtt
+#  name: "Jason's Button"
+#  state_topic: "hass/jd_button"
